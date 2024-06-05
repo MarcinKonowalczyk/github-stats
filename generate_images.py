@@ -32,6 +32,7 @@ async def generate_overview(s: Stats) -> None:
     Generate an SVG badge with summary statistics
     :param s: Represents user's GitHub statistics
     """
+    print("Generating overview badge...")
     with open("templates/overview.svg", "r") as f:
         output = f.read()
 
@@ -54,6 +55,7 @@ async def generate_languages(s: Stats) -> None:
     Generate an SVG badge with summary languages used
     :param s: Represents user's GitHub statistics
     """
+    print("Generating languages badge...")
     with open("templates/languages.svg", "r") as f:
         output = f.read()
 
@@ -99,6 +101,7 @@ async def main() -> None:
     """
     Generate all badges
     """
+    print("Generating badges...")
     access_token = os.getenv("ACCESS_TOKEN")
     if not access_token:
         # access_token = os.getenv("GITHUB_TOKEN")
@@ -129,7 +132,9 @@ async def main() -> None:
             exclude_langs=excluded_langs,
             ignore_forked_repos=ignore_forked_repos,
         )
-        await asyncio.gather(generate_languages(s), generate_overview(s))
+        _gl = generate_languages(s)
+        _go = generate_overview(s)
+        await asyncio.gather(_gl, _go)
 
 
 if __name__ == "__main__":
